@@ -102,14 +102,14 @@ function ModalCropper({setImage}, ref){
                             </StyledPreview>
 
                             <div className="p-2 d-flex justify-content-evenly">
-                                <ul class="list-group list-group-horizontal-sm">
-                                    <li class="list-group-item list-group-item-info">width</li>
-                                    <li class="list-group-item">{Math.floor(details.width)} px</li>
+                                <ul className="list-group list-group-horizontal-sm">
+                                    <li className="list-group-item list-group-item-info">width</li>
+                                    <li className="list-group-item">{Math.floor(details.width)} px</li>
                                 </ul>
      
-                                <ul class="list-group list-group-horizontal-sm">
-                                    <li class="list-group-item list-group-item-info">height</li>
-                                    <li class="list-group-item">{Math.floor(details.height)} px</li>
+                                <ul className="list-group list-group-horizontal-sm">
+                                    <li className="list-group-item list-group-item-info">height</li>
+                                    <li className="list-group-item">{Math.floor(details.height)} px</li>
                                 </ul>
                             </div>
                         </Col>

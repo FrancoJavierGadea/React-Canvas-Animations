@@ -15,6 +15,7 @@ import ModalCropper from './components/ModalCropper';
 
 
 import bg from "./assets/images/cropper-bg.png";
+import CanvasAnimation from './components/CanvasAnimation';
 
 const StyledContainer = styled.div`
 
@@ -71,7 +72,7 @@ function App() {
       
       <Container className="p-0 rounded">
         <StyledContainer>
-          <img src={image} alt=""></img>
+          <CanvasAnimation src={image}></CanvasAnimation>
         </StyledContainer>
       </Container>
 
