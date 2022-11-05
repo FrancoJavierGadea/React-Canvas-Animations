@@ -1,4 +1,7 @@
 import { useRef, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import { SnowAnimation } from "../helpers/SnowAnimation";
+import { useAnimation } from "../hooks/useAnimation";
 
 
 function CanvasAnimation({src}) {
@@ -12,6 +15,9 @@ function CanvasAnimation({src}) {
     const [height, setHeight] = useState(maxHeight);
 
     const canvasRef = useRef(null);
+
+
+    const [id, start, setStart, animation, setAnimation] = useAnimation(null);
 
 
     useEffect(() => {
@@ -53,15 +59,33 @@ function CanvasAnimation({src}) {
             ctx.clearRect(0, 0, width, height);
 
             ctx.drawImage(img, 0, 0, imgWidth, imgHeigth);
+
+            setAnimation(SnowAnimation(canvasRef.current, {
+                image: img
+            }));
         }
         
     }, [src, width, height]);
 
 
+    const startAnimation = () => {
+
+        setStart(true);
+    }
+
+    const stopAnimation = () => {
+
+        setStart(false);
+    }
+
     return (<>
     
         <canvas width={width} height={height} ref={canvasRef} style={{display: 'block', margin: 'auto'}}></canvas>
     
+        <div className="d-flex justify-content-evenly p-2">
+            <Button variant="primary" onClick={startAnimation}>Start</Button>
+            <Button variant="danger" onClick={stopAnimation}>Stop</Button>
+        </div>
     </>);
 }
 
