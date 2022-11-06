@@ -17,8 +17,10 @@ function CanvasAnimation({src}) {
     const canvasRef = useRef(null);
 
 
-    const [id, start, setStart, animation, setAnimation] = useAnimation(null);
+    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, SnowAnimation);
 
+    
+    const [inputs, setInputs] = useState({color: '#ffffff', number: 5000, velocity: 1.5});
 
     useEffect(() => {
 
@@ -60,9 +62,7 @@ function CanvasAnimation({src}) {
 
             ctx.drawImage(img, 0, 0, imgWidth, imgHeigth);
 
-            setAnimation(SnowAnimation(canvasRef.current, {
-                image: img
-            }));
+            setOptions({...options, image: img});
         }
         
     }, [src, width, height]);
@@ -78,13 +78,61 @@ function CanvasAnimation({src}) {
         setStart(false);
     }
 
+    const changeColor = ({target: {value}}) => {
+
+        setInputs({...inputs, color: value});
+
+        setOptions({
+            ...options,
+            particle: {
+                ...options.particle,
+                color: value
+            }
+        });
+    }
+
+    const changeNumberOfParticles = ({target: {value}}) => {
+
+        setInputs({...inputs, number: value});
+
+        if(Number(value)< 0 || Number(value) > 5000) return;
+        
+        setOptions({
+            ...options,
+            number: Number(value)
+        });
+    }
+
+    const changeVelocity = ({target: {value}}) => {
+
+        setInputs({...inputs, velocity: value});
+
+        if(Number(value) < 0 || Number(value) > 10) return;
+        
+        setOptions({
+            ...options,
+            particle: {
+                ...options.particle,
+                velocity: Number(value)
+            }
+        });
+    }
+
     return (<>
     
         <canvas width={width} height={height} ref={canvasRef} style={{display: 'block', margin: 'auto'}}></canvas>
     
         <div className="d-flex justify-content-evenly p-2">
+
             <Button variant="primary" onClick={startAnimation}>Start</Button>
+
             <Button variant="danger" onClick={stopAnimation}>Stop</Button>
+
+            <input type="color" className="form-control form-control-color" title="Choose your color" onChange={changeColor} value={inputs.color}></input>
+            
+            <input type="number" className="form-control form-control-number" style={{maxWidth: '150px'}}  min="0" max="5000" step="100" onChange={changeNumberOfParticles} value={inputs.number}></input>
+
+            <input type="number" className="form-control form-control-number" style={{maxWidth: '150px'}}  min="0" max="10" step="0.5" onChange={changeVelocity} value={inputs.velocity}></input>
         </div>
     </>);
 }

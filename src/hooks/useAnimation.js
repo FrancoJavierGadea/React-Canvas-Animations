@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 
-export function useAnimation(aux){
+export function useAnimation(canvasRef, animationFunction){
 
     const id = useRef(null);
 
     const [start, setStart] = useState(false);
 
-    const [animation, setAnimation] = useState(aux);
+    const [animation, setAnimation] = useState(() => animationFunction);
+
+    const [animationOptions, setAnimationOptions] = useState({});
 
 
     useEffect(() => {
 
-        if(start === true){
+        if(start && animation && canvasRef.current){
 
             console.log('Start Animation');
 
+            const anime = animation(canvasRef.current, animationOptions);
+
             const animate = () => {
                 
-                animation.draw();
+                anime.draw();
                 
                 id.current = requestAnimationFrame(animate);
             }
@@ -27,30 +31,26 @@ export function useAnimation(aux){
         }
         else {
 
-            if(id) {
+            if(id.current) {
 
+                console.log('Stop Animation 2');
                 cancelAnimationFrame(id.current);
-                console.log('Stop Animation');
+                id.current = null;
             }
         }
 
         return () => {
 
-            cancelAnimationFrame(id.current);
+            if(id.current) {
+
+                console.log('Stop Animation');
+                cancelAnimationFrame(id.current);
+                id.current = null;
+            }
         }
         
-    }, [start, animation]);
+    }, [start, animation, animationOptions]);
 
 
-    useEffect(() => {
-
-        console.log('Change Animation');
-
-        id.current = null;
-
-        //setStart(false);
-        
-    }, [animation]);
-
-    return [id.current, start, setStart, animation, setAnimation];
+    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions];
 }

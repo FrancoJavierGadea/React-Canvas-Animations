@@ -74,6 +74,8 @@ class Particle {
 
 export const SnowAnimation = (canvas, opt = {}) => {
 
+    if(!canvas) return null;
+
     let options = {
         image: undefined,
         number: 5000,

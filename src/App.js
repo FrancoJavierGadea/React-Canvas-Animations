@@ -45,7 +45,7 @@ function App() {
 
   const modal = useRef();
 
-  const [image, setImage] = useState(blackhole);
+  const [image, setImage] = useState(null);
 
   const loadImage = (e) => {
 
