@@ -98,7 +98,7 @@ function CanvasAnimation({src, setDownload}) {
             setDownload(canvasRef.current.toDataURL());
         }
 
-    }, [start]);
+    }, [start, setDownload]);
 
     return (<>
         <StyledContainer height={maxHeight}>

@@ -46,7 +46,22 @@ class Particle {
 
     draw(){
 
-        this.ctx.fillStyle = this.options.color;
+        //* Color
+        switch(true){
+
+            case typeof this.options.color === 'string':
+
+                this.ctx.fillStyle = this.options.color;
+                break;
+
+            case Array.isArray(this.options.color) && this.options.color.length > 0:
+
+                this.ctx.fillStyle = this.options.color[ Math.floor(Math.random() * this.options.color.length) ];
+                break;
+                
+            default:
+                this.ctx.fillStyle = '#ffffff';  
+        }
         
         this.ctx.globalAlpha = 0.5;
         

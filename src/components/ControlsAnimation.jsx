@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 
 function ControlsAnimation({setStart, options, setOptions}) {
 
-    const [inputs, setInputs] = useState({color: '#ffffff', number: 5000, velocity: 1.5});
+    const [inputs, setInputs] = useState({colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5});
 
     const startAnimation = () => {
 
@@ -16,10 +16,31 @@ function ControlsAnimation({setStart, options, setOptions}) {
         setStart(false);
     }
 
+    const changeColorArray = ({target: {value}}) => {
+  
+        setInputs({
+            ...inputs,
+            color: value,
+            colorArray: [...inputs.colorArray, value]
+        });
+        
+        setOptions({
+            ...options,
+            particle: {
+                ...options.particle,
+                color: [...inputs.colorArray, value]
+            }
+        });
+    }
+
     const changeColor = ({target: {value}}) => {
 
-        setInputs({...inputs, color: value});
-
+        setInputs({
+            ...inputs,
+            color: value,
+            colorArray: []
+        }); 
+        
         setOptions({
             ...options,
             particle: {
@@ -64,7 +85,13 @@ function ControlsAnimation({setStart, options, setOptions}) {
 
             <Button variant="danger" onClick={stopAnimation}>Stop</Button>
 
-            <input type="color" className="form-control form-control-color" onChange={changeColor} value={inputs.color} title="Color"></input>
+            <div className="d-flex" style={{maxWidth: '150px'}}>  
+
+                <input type="color" className="form-control form-control-color mx-1" onChange={changeColor} value={inputs.color} title="Color"></input>
+
+                <input type="color" className="form-control form-control-color mx-1" onChange={changeColorArray} value={inputs.color} title="Multiples Colors"></input>
+            </div>
+
 
             <input type="number" className="form-control form-control-number" style={{maxWidth: '100px'}}  min="0" max="5000" step="100" onChange={changeNumberOfParticles} value={inputs.number} title="Cantidad de Particulas"></input>
 
