@@ -13,32 +13,9 @@ import blackhole from "./assets/images/blackhole.jpg";
 import { getBase64 } from './helpers/ImageLoader';
 import ModalCropper from './components/ModalCropper';
 
-
-import bg from "./assets/images/cropper-bg.png";
 import CanvasAnimation from './components/CanvasAnimation';
 
-const StyledContainer = styled.div`
 
-  --grid-bg-size: 15px;
-  --grid-bg-color: #ffffff20;
-  
-  height: 80vh;
-  max-height: 700px;
-
-  background-size: var(--grid-bg-size, 40px) var(--grid-bg-size, 40px);    
-  background-image: repeating-linear-gradient(0deg, var(--grid-bg-color, #fff), var(--grid-bg-color, #fff) 1px, transparent 1px, transparent var(--grid-bg-size, 40px)), repeating-linear-gradient(-90deg, var(--grid-bg-color, #fff), var(--grid-bg-color, #fff) 1px, transparent 1px, transparent var(--grid-bg-size, 40px));
-
-  background-image: url(${bg});
-
-  padding: 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-`;
 
 
 function App() {
@@ -46,6 +23,8 @@ function App() {
   const modal = useRef();
 
   const [image, setImage] = useState(null);
+
+  const [download, setDownload] = useState(null);
 
   const loadImage = (e) => {
 
@@ -71,9 +50,9 @@ function App() {
     <div className="App bg-dark p-2 vh-100">
       
       <Container className="p-0 rounded">
-        <StyledContainer>
-          <CanvasAnimation src={image}></CanvasAnimation>
-        </StyledContainer>
+        
+        <CanvasAnimation src={image} setDownload={setDownload}></CanvasAnimation>
+        
       </Container>
 
 
@@ -87,7 +66,7 @@ function App() {
 
         <Button variant="secondary" onClick={() => modal.current.show()}>Update Image</Button>
 
-        <a className="btn btn-success" href={image} target="_blank" rel="noreferrer" download="image">
+        <a className="btn btn-success" href={download} target="_blank" rel="noreferrer" download="image">
           <i className="bi bi-download mx-2"></i>
           Download
         </a>
