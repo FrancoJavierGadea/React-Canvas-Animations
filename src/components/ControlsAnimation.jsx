@@ -5,6 +5,8 @@ import SnowAnimationControls from "./CustomControls/SnowAnimationControls";
 import { SnowAnimation } from "../helpers/SnowAnimation";
 import MatrixAnimationControls from "./CustomControls/MatrixAnimationControls/MatrixAnimationControls";
 import { MatrixAnimation } from "../helpers/MatrixAnimation";
+import { DrawImageRain } from "../helpers/DrawImageRain";
+import DrawImageRainControls from "./CustomControls/DrawImageRainControls";
 
 
 function ControlsAnimation({animation, setStart, options, setOptions}) {
@@ -31,6 +33,8 @@ function ControlsAnimation({animation, setStart, options, setOptions}) {
             { animation === SnowAnimation ? <SnowAnimationControls options={options} setOptions={setOptions} /> : '' }
 
             { animation === MatrixAnimation ? <MatrixAnimationControls options={options} setOptions={setOptions} /> : '' }
+
+            { animation === DrawImageRain ? <DrawImageRainControls options={options} setOptions={setOptions} /> : '' }
                     
         </div>
 

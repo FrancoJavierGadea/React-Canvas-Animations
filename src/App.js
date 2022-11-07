@@ -22,7 +22,7 @@ function App() {
 
   const modal = useRef();
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(blackhole);
 
   const [download, setDownload] = useState(null);
 

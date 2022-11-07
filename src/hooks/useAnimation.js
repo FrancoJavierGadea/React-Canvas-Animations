@@ -11,6 +11,7 @@ export function useAnimation(canvasRef, animationFunction){
 
     const [animationOptions, setAnimationOptions] = useState({});
 
+    const [PhotoMap, setPhotoMap] = useState(null);
 
     useEffect(() => {
 
@@ -18,7 +19,7 @@ export function useAnimation(canvasRef, animationFunction){
 
             console.log('Start Animation');
 
-            const anime = animation(canvasRef.current, animationOptions);
+            const anime = PhotoMap ? animation(canvasRef.current, PhotoMap, animationOptions) : animation(canvasRef.current, animationOptions);
 
             const animate = () => {
                 
@@ -52,5 +53,5 @@ export function useAnimation(canvasRef, animationFunction){
     }, [start, animation, animationOptions]);
 
 
-    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions];
+    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions, setPhotoMap];
 }

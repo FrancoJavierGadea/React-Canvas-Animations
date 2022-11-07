@@ -7,6 +7,8 @@ import ControlsAnimation from "./ControlsAnimation";
 import bg from "../assets/images/cropper-bg.png";
 import styled from "styled-components";
 import { MatrixAnimation } from "../helpers/MatrixAnimation";
+import { DrawImageRain } from "../helpers/DrawImageRain";
+import { getPhotoMap } from "../helpers/PhotoMap";
 
 const StyledContainer = styled.div`
 
@@ -44,7 +46,7 @@ function CanvasAnimation({src, setDownload}) {
     const canvasRef = useRef(null);
 
 
-    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, MatrixAnimation);
+    const [id, start, setStart, animation, setAnimation, options, setOptions, setPhotoMap] = useAnimation(canvasRef, DrawImageRain);
 
     
     useEffect(() => {
@@ -87,10 +89,19 @@ function CanvasAnimation({src, setDownload}) {
 
             ctx.drawImage(img, 0, 0, imgWidth, imgHeigth);
 
+            if(animation === DrawImageRain){
+
+                setPhotoMap(getPhotoMap(canvas));
+            }
+            else {
+                setPhotoMap(null);
+            } 
+            
+
             setOptions({...options, image: img});
         }
         
-    }, [src, width, height]);
+    }, [src, animation, width, height]);
 
     useEffect(() => {
         
