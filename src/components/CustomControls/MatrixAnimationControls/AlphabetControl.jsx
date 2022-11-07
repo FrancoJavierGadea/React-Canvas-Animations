@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { katakana, latin, nums } from "../../helpers/MatrixAnimation";
+import { katakana, latin, nums } from "../../../helpers/MatrixAnimation";
 
 
 function AlphabetControl({onChange}){
@@ -23,8 +23,6 @@ function AlphabetControl({onChange}){
     }
 
     const addAlphabet = ({target: {value, checked, name}}) => {
-
-        console.log(value, checked, name);
 
         setValues({
             ...values,

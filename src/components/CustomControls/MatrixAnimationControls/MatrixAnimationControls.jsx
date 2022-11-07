@@ -4,7 +4,7 @@ import AlphabetControl from "./AlphabetControl";
 
 function MatrixAnimationControls({options, setOptions}){
 
-    const [values, setValues] = useState({colorArray: [], color: '#00ff00', velocity: 1.5});
+    const [values, setValues] = useState({colorArray: [], color: '#00ff00', velocity: 1.5, fontSize: 16});
 
 
     const changeColorArray = ({target: {value}}) => {
@@ -66,6 +66,21 @@ function MatrixAnimationControls({options, setOptions}){
         });
     }
 
+    const changeFontSize = ({target: {value}}) => {
+
+        setValues({...values, fontSize: value});
+
+        if(Number(value) < 5 || Number(value) > 30) return;
+
+        setOptions({
+            ...options,
+            particle: {
+                ...options.particle,
+                fontSize: Number(value)
+            }
+        });
+    }
+
     return (<>
         
         <div className="d-flex" style={{maxWidth: '150px'}}>  
@@ -76,9 +91,13 @@ function MatrixAnimationControls({options, setOptions}){
         </div>
 
         <AlphabetControl  onChange={changeAlphabet}/>
+
+        <input type="number" className="form-control form-control-number" style={{maxWidth: '100px'}}  min="5" max="30" step="1" onChange={changeFontSize} value={values.fontSize} title="Tamaño de Fuente"></input> 
     
         <input type="number" className="form-control form-control-number" style={{maxWidth: '100px'}}  min="0" max="5" step="0.1" onChange={changeVelocity} value={values.velocity} title="Velocidad"></input> 
     </>);
 }
+
+
 
 export default MatrixAnimationControls;

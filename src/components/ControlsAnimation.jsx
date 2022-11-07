@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import SnowAnimationControls from "./CustomControls/SnowAnimationControls";
 
 import { SnowAnimation } from "../helpers/SnowAnimation";
-import MatrixAnimationControls from "./CustomControls/MatrixAnimationControls";
+import MatrixAnimationControls from "./CustomControls/MatrixAnimationControls/MatrixAnimationControls";
 import { MatrixAnimation } from "../helpers/MatrixAnimation";
 
 
