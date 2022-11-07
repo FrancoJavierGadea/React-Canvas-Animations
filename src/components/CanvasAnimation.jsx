@@ -6,6 +6,7 @@ import ControlsAnimation from "./ControlsAnimation";
 
 import bg from "../assets/images/cropper-bg.png";
 import styled from "styled-components";
+import { MatrixAnimation } from "../helpers/MatrixAnimation";
 
 const StyledContainer = styled.div`
 
@@ -43,7 +44,7 @@ function CanvasAnimation({src, setDownload}) {
     const canvasRef = useRef(null);
 
 
-    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, SnowAnimation);
+    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, MatrixAnimation);
 
     
     useEffect(() => {
@@ -105,7 +106,7 @@ function CanvasAnimation({src, setDownload}) {
             <canvas width={width} height={height} ref={canvasRef} style={{display: 'block', margin: 'auto'}}></canvas>
         </StyledContainer>
     
-        <ControlsAnimation options={options} setOptions={setOptions} setStart={setStart}></ControlsAnimation>
+        <ControlsAnimation options={options} setOptions={setOptions} setStart={setStart} animation={animation}></ControlsAnimation>
     </>);
 }
 
