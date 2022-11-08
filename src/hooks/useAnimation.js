@@ -17,16 +17,22 @@ export function useAnimation(canvasRef, animationFunction){
 
             console.log('Start Animation');
 
-            const anime = animation(canvasRef.current, animationOptions);
-
-            const animate = () => {
+            try {
                 
-                anime.draw();
-                
-                id.current = requestAnimationFrame(animate);
+                const anime = animation(canvasRef.current, animationOptions);
+    
+                const animate = () => {
+                    
+                    anime.draw();
+                    
+                    id.current = requestAnimationFrame(animate);
+                }
+    
+                animate();
             }
-
-            animate();
+            catch (error) {
+                
+            }
         }
 
         return () => {

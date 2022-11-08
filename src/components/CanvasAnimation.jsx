@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useImperativeHandle, forwardRef, useCallback } from "react";
 
 import { SnowAnimation } from "../helpers/SnowAnimation";
 import { useAnimation } from "../hooks/useAnimation";
@@ -33,7 +33,7 @@ const StyledContainer = styled.div`
 `;
 
 
-function CanvasAnimation({src, setDownload}) {
+function CanvasAnimation({src, setDownload}, ref) {
 
     const maxWidth = 960;
 
@@ -43,12 +43,19 @@ function CanvasAnimation({src, setDownload}) {
 
     const [height, setHeight] = useState(maxHeight);
 
+    const [image, setImage] = useState(null);
+
     const canvasRef = useRef(null);
 
 
-    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, DrawImageRain);
+    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, SnowAnimation);
 
-    
+
+    //Exponer metodos a los Componentes Padres
+    useImperativeHandle(ref, () => ({animation, setAnimation, options, setOptions}));
+
+
+
     useEffect(() => {
 
         const img = new Image();
@@ -79,15 +86,7 @@ function CanvasAnimation({src, setDownload}) {
             //* Modificar el Tamaño del Canvas
             setWidth(imgWidth); setHeight(imgHeigth);
 
-
-            //* Dibujar la Imagen
-            const canvas = canvasRef.current;
-
-            const ctx = canvas.getContext('2d');
-
-            ctx.clearRect(0, 0, imgWidth, imgHeigth);
-
-            ctx.drawImage(img, 0, 0, imgWidth, imgHeigth);
+            setImage(img);
 
 
             if(animation === DrawImageRain){
@@ -100,11 +99,32 @@ function CanvasAnimation({src, setDownload}) {
             }
             else {
 
-                setOptions({...options, image: img, photoMap: undefined});
+                setOptions({
+                    ...options,
+                    image: img, 
+                    photoMap: undefined
+                });
             }
         }
         
     }, [src, animation]);
+
+
+    useEffect(() => {
+
+        if(image){
+
+            //* Dibujar la Imagen
+            const canvas = canvasRef.current;
+    
+            const ctx = canvas.getContext('2d');
+    
+            ctx.clearRect(0, 0, width, height);
+    
+            ctx.drawImage(image, 0, 0, width, height);
+        }
+        
+    }, [image, width, height]);
 
     useEffect(() => {
         
@@ -124,4 +144,4 @@ function CanvasAnimation({src, setDownload}) {
     </>);
 }
 
-export default CanvasAnimation;
+export default forwardRef(CanvasAnimation);

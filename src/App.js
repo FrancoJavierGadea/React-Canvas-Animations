@@ -7,20 +7,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Button, Container } from "react-bootstrap";
 
-import styled from "styled-components";
-
 import blackhole from "./assets/images/blackhole.jpg";
 import { getBase64 } from './helpers/ImageLoader';
 import ModalCropper from './components/ModalCropper';
 
 import CanvasAnimation from './components/CanvasAnimation';
+import SelectAnimation from './components/SelectAnimation';
 
 
 
 
 function App() {
 
-  const modal = useRef();
+  const modalRef = useRef();
+
+  const canvasRef = useRef();
 
   const [image, setImage] = useState(blackhole);
 
@@ -34,11 +35,11 @@ function App() {
 
     img.then((value) => {
 
-      modal.current.setFileType(file.type);
+      modalRef.current.setFileType(file.type);
 
-      modal.current.setCropperImage(value.base64);
+      modalRef.current.setCropperImage(value.base64);
 
-      modal.current.show();
+      modalRef.current.show();
     })
     .catch((error) => {
 
@@ -46,12 +47,22 @@ function App() {
     })
   }
 
+  const selectAnimation = (animation) => {
+
+    canvasRef.current.setOptions({});
+    
+    canvasRef.current.setAnimation(() => animation);
+
+  }
+
   return (
     <div className="App bg-dark p-2 vh-100">
+
+      <SelectAnimation onChange={selectAnimation}></SelectAnimation>
       
       <Container className="p-0 rounded">
         
-        <CanvasAnimation src={image} setDownload={setDownload}></CanvasAnimation>
+        <CanvasAnimation src={image} setDownload={setDownload} ref={canvasRef}></CanvasAnimation>
         
       </Container>
 
@@ -64,7 +75,7 @@ function App() {
           Cargar Imagen
         </label>
 
-        <Button variant="secondary" onClick={() => modal.current.show()}>Update Image</Button>
+        <Button variant="secondary" onClick={() => modalRef.current.show()}>Update Image</Button>
 
         <a className="btn btn-success" href={download} target="_blank" rel="noreferrer" download="image">
           <i className="bi bi-download mx-2"></i>
@@ -73,7 +84,7 @@ function App() {
 
       </Container>
 
-      <ModalCropper ref={modal} setImage={setImage}></ModalCropper>
+      <ModalCropper ref={modalRef} setImage={setImage}></ModalCropper>
 
     </div>
   );
