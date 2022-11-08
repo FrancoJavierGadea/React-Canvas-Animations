@@ -7,7 +7,9 @@ class Particle {
         //* Canvas
             this.canvas = canvas;
         
-            this.ctx = canvas.getContext('2d', { willReadFrequently: true });
+            this.ctx = canvas.getContext('2d', {
+                desynchronized: true
+            });
 
             this.width = canvas.width;
 
@@ -47,7 +49,10 @@ class Particle {
             this.mapX = Math.floor(this.x);
             this.mapY = Math.floor(this.y);
 
-            this.speed = this.PhotoMap[this.mapY][this.mapX].alpha;
+            try {
+                this.speed = this.PhotoMap[this.mapY][this.mapX].alpha;
+            }
+            catch (error){}
 
         let movement = (2.9 - this.speed) + this.velocity;
         
@@ -69,7 +74,12 @@ class Particle {
 
             case this.options.mapColor === true:
 
-                this.ctx.fillStyle = this.PhotoMap[this.mapY][this.mapX].color;
+                try {
+                    
+                    this.ctx.fillStyle = this.PhotoMap[this.mapY][this.mapX].color;
+                } 
+                catch (error){}
+
                 break
 
             case typeof this.options.color === 'string':
@@ -94,40 +104,26 @@ class Particle {
         
         this.ctx.fill();
     }
-
-    set setColor(color){
-
-        this.options.color = color;
-    }
-
-    get getColor(){
-
-        return this.options.color;
-    }
 }
 
 
-
-
-
-
-
-export const DrawImageRain = (canvas,  PhotoMap, opt = {}) => {
+export const DrawImageRain = (canvas, opt = {}) => {
 
     if(!canvas) return null;
 
     let options = {
         image: undefined,
+        photoMap: undefined,
         number: 5000,
         particle: {},
         ...opt
     }
 
-    if(!options.image) throw new Error('This animation require a image');
+    if(!options.photoMap) throw new Error('This animation require a photoMap');
 
 
     //* Clear
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const ctx = canvas.getContext('2d');
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -136,12 +132,12 @@ export const DrawImageRain = (canvas,  PhotoMap, opt = {}) => {
 
     for(let i = 0; i < options.number; i++){
 
-        Particles.push(new Particle(canvas, PhotoMap, options.particle));
+        Particles.push(new Particle(canvas, options.photoMap, options.particle));
     }
 
     return {
         draw: () => {
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            const ctx = canvas.getContext('2d');
 
             //Draw Image
             //ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
@@ -159,7 +155,9 @@ export const DrawImageRain = (canvas,  PhotoMap, opt = {}) => {
 
                 p.draw();
             })
-        }
+        },
+
+        name: 'DrawImageRain'
     }
 }
 

@@ -1,11 +1,16 @@
-//* Crea un mapa de los pixeles de la imagen dibujada en el canvas obteniendo su color y alpha
-export function getPhotoMap(canvas){
+export function getPhotoMap(image, width, height){
 
-    let ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const canvas = document.createElement('canvas');
 
-    let ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    canvas.width = width;
+    
+    canvas.height = height;
 
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    ctx.drawImage(image, 0, 0, width, height);
+
+    const ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     let map = [];
 

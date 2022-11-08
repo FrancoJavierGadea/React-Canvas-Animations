@@ -46,14 +46,10 @@ function CanvasAnimation({src, setDownload}) {
     const canvasRef = useRef(null);
 
 
-    const [id, start, setStart, animation, setAnimation, options, setOptions, setPhotoMap] = useAnimation(canvasRef, DrawImageRain);
+    const [id, start, setStart, animation, setAnimation, options, setOptions] = useAnimation(canvasRef, DrawImageRain);
 
     
     useEffect(() => {
-
-        const canvas = canvasRef.current;
-
-        const ctx = canvas.getContext('2d');
 
         const img = new Image();
 
@@ -85,23 +81,30 @@ function CanvasAnimation({src, setDownload}) {
 
 
             //* Dibujar la Imagen
-            ctx.clearRect(0, 0, width, height);
+            const canvas = canvasRef.current;
+
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, imgWidth, imgHeigth);
 
             ctx.drawImage(img, 0, 0, imgWidth, imgHeigth);
 
+
             if(animation === DrawImageRain){
 
-                setPhotoMap(getPhotoMap(canvas));
+                setOptions({
+                    ...options,
+                    image: img, 
+                    photoMap: getPhotoMap(img, imgWidth, imgHeigth)
+                });
             }
             else {
-                setPhotoMap(null);
-            } 
-            
 
-            setOptions({...options, image: img});
+                setOptions({...options, image: img, photoMap: undefined});
+            }
         }
         
-    }, [src, animation, width, height]);
+    }, [src, animation]);
 
     useEffect(() => {
         

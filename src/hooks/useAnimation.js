@@ -11,15 +11,13 @@ export function useAnimation(canvasRef, animationFunction){
 
     const [animationOptions, setAnimationOptions] = useState({});
 
-    const [PhotoMap, setPhotoMap] = useState(null);
-
     useEffect(() => {
 
         if(start && animation && canvasRef.current){
 
             console.log('Start Animation');
 
-            const anime = PhotoMap ? animation(canvasRef.current, PhotoMap, animationOptions) : animation(canvasRef.current, animationOptions);
+            const anime = animation(canvasRef.current, animationOptions);
 
             const animate = () => {
                 
@@ -29,15 +27,6 @@ export function useAnimation(canvasRef, animationFunction){
             }
 
             animate();
-        }
-        else {
-
-            if(id.current) {
-
-                console.log('Stop Animation 2');
-                cancelAnimationFrame(id.current);
-                id.current = null;
-            }
         }
 
         return () => {
@@ -53,5 +42,5 @@ export function useAnimation(canvasRef, animationFunction){
     }, [start, animation, animationOptions]);
 
 
-    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions, setPhotoMap];
+    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions];
 }
