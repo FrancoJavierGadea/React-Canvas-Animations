@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/React-Canvas-Animations/static/css/main.5586fcbc.css",
+    "main.js": "/React-Canvas-Animations/static/js/main.23343bda.js",
+    "static/media/blackhole.jpg": "/React-Canvas-Animations/static/media/blackhole.7ee8d8a2acd774aeddb4.jpg",
+    "static/media/bootstrap-icons.woff?": "/React-Canvas-Animations/static/media/bootstrap-icons.e559bf06bc84fd9525e6.woff",
+    "static/media/bootstrap-icons.woff2?": "/React-Canvas-Animations/static/media/bootstrap-icons.ea98e12d2d58747f9fc5.woff2",
+    "index.html": "/React-Canvas-Animations/index.html",
+    "main.5586fcbc.css.map": "/React-Canvas-Animations/static/css/main.5586fcbc.css.map",
+    "main.23343bda.js.map": "/React-Canvas-Animations/static/js/main.23343bda.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5586fcbc.css",
+    "static/js/main.23343bda.js"
+  ]
+}
