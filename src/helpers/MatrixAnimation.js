@@ -114,10 +114,19 @@ export const MatrixAnimation = (canvas, opt = {}) => {
 
     let options = {
         image: undefined,
+        drawImage: true,
         alphabet: katakana + latin + nums,
         particle: {},
         ...opt
     }
+
+    if(!options.drawImage){
+
+        const ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
 
     //Tamaño de la Fuente por defecto 
     const fontSize = options.particle.fontSize || 16;
@@ -142,7 +151,7 @@ export const MatrixAnimation = (canvas, opt = {}) => {
             const ctx = canvas.getContext('2d');
 
             //Draw Image
-            if(options.image){
+            if(options.drawImage && options.image){
                 ctx.globalAlpha = 0.05; 
                 ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
                 ctx.globalAlpha = 1;

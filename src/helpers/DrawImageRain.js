@@ -139,10 +139,6 @@ export const DrawImageRain = (canvas, opt = {}) => {
         draw: () => {
             const ctx = canvas.getContext('2d');
 
-            //Draw Image
-            //ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
-            
-
             //Clear scream
             ctx.globalAlpha = 0.05;
 

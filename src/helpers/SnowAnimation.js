@@ -93,9 +93,17 @@ export const SnowAnimation = (canvas, opt = {}) => {
 
     let options = {
         image: undefined,
+        drawImage: true,
         number: 5000,
         particle: {},
         ...opt
+    }
+
+    if(!options.drawImage){
+
+        const ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     let Particles = [];
@@ -111,7 +119,7 @@ export const SnowAnimation = (canvas, opt = {}) => {
             const ctx = canvas.getContext('2d');
 
             //Draw Image
-            if(options.image){
+            if(options.drawImage && options.image){
 
                 ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
             } 

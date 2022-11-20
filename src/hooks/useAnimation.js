@@ -32,6 +32,7 @@ export function useAnimation(canvasRef, animationFunction){
             }
             catch (error) {
                 
+                console.log('Error: ', error);
             }
         }
 
@@ -40,6 +41,7 @@ export function useAnimation(canvasRef, animationFunction){
             if(id.current) {
 
                 console.log('Stop Animation');
+
                 cancelAnimationFrame(id.current);
                 id.current = null;
             }

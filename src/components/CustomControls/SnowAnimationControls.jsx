@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function SnowAnimationControls({options, setOptions}){
 
-    const [values, setValues] = useState({colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5});
+    const [values, setValues] = useState({drawImage: true, colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5});
 
 
     const changeColorArray = ({target: {value}}) => {
@@ -71,7 +71,29 @@ function SnowAnimationControls({options, setOptions}){
         });
     }
 
+    const changeDrawImage = ({target: {checked}}) => {
+
+        setValues({
+            ...values,
+            drawImage: checked
+        });
+
+        setOptions({
+            ...options,
+            drawImage: checked
+        })
+    }
+
     return (<>
+
+        <div className="d-flex align-items-center">
+
+            <div className="form-check form-switch">
+                <input className="form-check-input" type="checkbox" role="switch" checked={values.drawImage} onChange={changeDrawImage} title="Pintar imagen de fondo"/>
+            </div>  
+            
+        </div>
+
         <div className="d-flex" style={{maxWidth: '150px'}}>  
 
             <input type="color" className="form-control form-control-color mx-1" onChange={changeColor} value={values.color} title="Color"></input>
