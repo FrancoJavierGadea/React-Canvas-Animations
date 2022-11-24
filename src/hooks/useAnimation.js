@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getPhotoMap } from '../helpers/PhotoMap';
 
 
 export function useAnimation(canvasRef, animationFunction){
@@ -32,7 +33,17 @@ export function useAnimation(canvasRef, animationFunction){
             }
             catch (error) {
                 
-                console.log('Error: ', error);
+                if(error.cause === 'photoMap'){
+
+                    let {img, width, height} = animationOptions.image;
+
+                    const photoMap = getPhotoMap(img, width, height);
+
+                    setAnimationOptions({
+                        ...animationOptions,
+                        photoMap
+                    })
+                }
             }
         }
 

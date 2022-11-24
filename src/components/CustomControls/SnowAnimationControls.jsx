@@ -1,11 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
+const initialValue = { drawImage: true, colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5 };
 
 function SnowAnimationControls({options, setOptions}){
 
-    const [values, setValues] = useState({drawImage: true, colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5});
+    const [values, setValues] = useState(initialValue);
 
+
+    useEffect(() => {
+
+        const aux = { ...initialValue }
+
+        if(options.drawImage !== undefined) aux.drawImage = options.drawImage;
+
+        if(options.number) aux.number = options.number;
+
+        if(options.particle && options.particle.color){
+
+            let { particle: {color}} = options;
+
+            if(Array.isArray(color)){
+
+                aux.colorArray = color;
+
+                aux.color = color[color.length - 1];
+            }
+
+            if(typeof color === "string"){
+
+                aux.color = color
+            }
+        }
+
+        if(options.particle && options.particle.velocity !== undefined) aux.velocity = options.particle.velocity;
+
+        setValues(aux);
+
+    }, [options]);
 
     const changeColorArray = ({target: {value}}) => {
   

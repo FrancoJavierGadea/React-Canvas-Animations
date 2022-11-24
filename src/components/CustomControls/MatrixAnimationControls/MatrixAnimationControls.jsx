@@ -1,11 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AlphabetControl from "./AlphabetControl";
+
+
+const initialValue = { drawImage: true, colorArray: [], color: '#00ff00', velocity: 1.5, fontSize: 16 };
 
 
 function MatrixAnimationControls({options, setOptions}){
 
     const [values, setValues] = useState({drawImage: true, colorArray: [], color: '#00ff00', velocity: 1.5, fontSize: 16});
 
+
+    useEffect(() => {
+
+        const aux = { ...initialValue }
+
+        if(options.drawImage !== undefined) aux.drawImage = options.drawImage;
+
+        if(options.particle && options.particle.fontSize) aux.fontSize = options.particle.fontSize;
+
+        if(options.particle && options.particle.color){
+
+            let { particle: {color}} = options;
+
+            if(Array.isArray(color)){
+
+                aux.colorArray = color;
+
+                aux.color = color[color.length - 1];
+            }
+
+            if(typeof color === "string"){
+
+                aux.color = color
+            }
+        }
+
+        if(options.particle && options.particle.velocity) aux.velocity = options.particle.velocity;
+
+        setValues(aux);
+        
+    }, [options]);
 
     const changeColorArray = ({target: {value}}) => {
   

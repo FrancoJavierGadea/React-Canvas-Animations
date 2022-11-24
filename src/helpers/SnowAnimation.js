@@ -121,7 +121,7 @@ export const SnowAnimation = (canvas, opt = {}) => {
             //Draw Image
             if(options.drawImage && options.image){
 
-                ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
+                ctx.drawImage(options.image.img, 0, 0, canvas.width, canvas.height);
             } 
 
             //Clear scream

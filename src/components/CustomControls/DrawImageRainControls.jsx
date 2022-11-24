@@ -1,8 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const initialValue = { imageColor: false, colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5 };
 
 function DrawImageRainControls({options, setOptions}) {
 
-    const [values, setValues] = useState({imageColor: false, colorArray: [], color: '#ffffff', number: 5000, velocity: 1.5});
+    const [values, setValues] = useState(initialValue);
+
+    useEffect(() => {
+        
+        const aux = { ...initialValue }
+
+        if(options.particle && options.particle.mapColor) aux.imageColor = options.particle.mapColor;
+
+        if(options.number) aux.number = options.number;
+
+        if(options.particle && options.particle.color){
+
+            let { particle: {color}} = options;
+
+            if(Array.isArray(color)){
+
+                aux.colorArray = color;
+
+                aux.color = color[color.length - 1];
+            }
+
+            if(typeof color === "string"){
+
+                aux.color = color
+            }
+        }
+
+        if(options.particle && options.particle.velocity !== undefined) aux.velocity = options.particle.velocity;
+
+        setValues(aux);
+
+    }, [options]);
 
 
 
@@ -73,10 +106,10 @@ function DrawImageRainControls({options, setOptions}) {
 
     const changeVelocity = ({target: {value}}) => {
 
+        if(Number(value) < 0 || Number(value) > 10) return;
+
         setValues({...values, velocity: value});
 
-        if(Number(value) < 0 || Number(value) > 10) return;
-        
         setOptions({
             ...options,
             particle: {
@@ -89,7 +122,7 @@ function DrawImageRainControls({options, setOptions}) {
     return (<>
         <div className="d-flex align-items-center" style={{maxWidth: '300px'}}>
             <div className="form-check form-switch">
-                <input className="form-check-input" type="checkbox" role="switch" value={values.imageColor} onChange={activateImageColor} title="Usar los colores de la Imagen"/>
+                <input className="form-check-input" type="checkbox" role="switch" checked={values.imageColor} onChange={activateImageColor} title="Usar los colores de la Imagen"/>
             </div>  
 
             <input type="color" className="form-control form-control-color mx-1" onChange={changeColor} value={values.color} title="Color" disabled={values.imageColor || ''}></input>

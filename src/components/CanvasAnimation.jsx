@@ -75,36 +75,25 @@ function CanvasAnimation({src, setDownload}, ref) {
 
             let imgHeigth = scale < 1 ? img.naturalHeight * scale : img.naturalHeight;
 
-            console.log('Image: ', {
+            const Image = {
+                img,
                 naturalWidth: img.naturalWidth,
                 naturalHeight: img.naturalHeight,
                 scale,
                 width: imgWidth,
                 height: imgHeigth
-            });
+            }
+
+            console.log('Image: ', Image);
             
             //* Modificar el Tamaño del Canvas
             setWidth(imgWidth); setHeight(imgHeigth);
 
-            setImage(img);
+            setImage(Image);
 
-
-            if(animation === DrawImageRain){
-
-                setOptions({
-                    ...options,
-                    image: img, 
-                    photoMap: getPhotoMap(img, imgWidth, imgHeigth)
-                });
-            }
-            else {
-
-                setOptions({
-                    ...options,
-                    image: img, 
-                    photoMap: undefined
-                });
-            }
+            setOptions({
+                image: Image
+            });
         }
         
     }, [src, animation]);
@@ -112,7 +101,7 @@ function CanvasAnimation({src, setDownload}, ref) {
 
     useEffect(() => {
 
-        if(image){
+        if(image && image.img){
 
             //* Dibujar la Imagen
             const canvas = canvasRef.current;
@@ -121,10 +110,11 @@ function CanvasAnimation({src, setDownload}, ref) {
     
             ctx.clearRect(0, 0, width, height);
     
-            ctx.drawImage(image, 0, 0, width, height);
+            ctx.drawImage(image.img, 0, 0, width, height);
         }
         
     }, [image, width, height]);
+
 
     useEffect(() => {
         

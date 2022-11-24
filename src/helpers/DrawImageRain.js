@@ -119,7 +119,7 @@ export const DrawImageRain = (canvas, opt = {}) => {
         ...opt
     }
 
-    if(!options.photoMap) throw new Error('This animation require a photoMap');
+    if(!options.photoMap) throw new Error('This animation require a photoMap', {cause: 'photoMap'});
 
 
     //* Clear

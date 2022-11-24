@@ -152,8 +152,11 @@ export const MatrixAnimation = (canvas, opt = {}) => {
 
             //Draw Image
             if(options.drawImage && options.image){
+
                 ctx.globalAlpha = 0.05; 
-                ctx.drawImage(options.image, 0, 0, canvas.width, canvas.height);
+
+                ctx.drawImage(options.image.img, 0, 0, canvas.width, canvas.height);
+
                 ctx.globalAlpha = 1;
             }
 
