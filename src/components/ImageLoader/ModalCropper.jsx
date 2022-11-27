@@ -1,14 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { useRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
+
+
 import { Cropper } from 'react-cropper';
 
-
 import "cropperjs/dist/cropper.css";
-import blackhole from "../assets/images/blackhole.jpg";
-import { useRef } from 'react';
+
+
 import styled from 'styled-components';
 
-import bg from "../assets/images/cropper-bg.png";
+import bg from "../../assets/images/cropper-bg.png";
 
 
 const StyledPreview = styled.div`
@@ -28,7 +29,7 @@ const StyledPreview = styled.div`
 `;
 
 
-function ModalCropper({setImage}, ref){
+function ModalCropper({onChange}, ref){
 
     //* Modal
     const [visible, setVisible] = useState(false);
@@ -41,9 +42,9 @@ function ModalCropper({setImage}, ref){
     //* Cropper
     const cropperRef = useRef(null);
 
-    const [cropperImage, setCropperImage] = useState(blackhole);
+    const [cropperImage, setCropperImage] = useState(null);
     
-    const [fileType, setFileType] = useState('image/jpg');
+    const [fileType, setFileType] = useState(null);
 
     const [details, setDetails] = useState({});
     
@@ -61,9 +62,7 @@ function ModalCropper({setImage}, ref){
             imageSmoothingQuality: 'high'
         }).toDataURL(fileType);
 
-        //console.log(cropImage);
-
-        setImage(cropImage);
+        onChange(cropImage);
 
         hide();
     };
@@ -71,6 +70,13 @@ function ModalCropper({setImage}, ref){
     const onCrop = (e) => {
 
         setDetails({...e.detail});
+    }
+
+    const reset = () => {
+
+        const cropper = cropperRef.current.cropper;
+
+        cropper.reset();
     }
 
 
@@ -95,23 +101,32 @@ function ModalCropper({setImage}, ref){
                         </Col>
 
                         <Col lg={5} xs={12}>
-                            <h3 className="text-center">Preview</h3>
 
-                            <StyledPreview>
-                                <div className="img-preview"></div>
-                            </StyledPreview>
+                            <div className="position-relative" style={{height: 500, width: "100%"}}>
 
-                            <div className="p-2 d-flex justify-content-evenly">
-                                <ul className="list-group list-group-horizontal-sm">
-                                    <li className="list-group-item list-group-item-info">width</li>
-                                    <li className="list-group-item">{Math.floor(details.width)} px</li>
-                                </ul>
-     
-                                <ul className="list-group list-group-horizontal-sm">
-                                    <li className="list-group-item list-group-item-info">height</li>
-                                    <li className="list-group-item">{Math.floor(details.height)} px</li>
-                                </ul>
+                                <h3 className="text-center">Preview</h3>
+
+                                <StyledPreview>
+                                    <div className="img-preview"></div>
+                                </StyledPreview>
+
+
+                                <div className="w-100 p-2 position-absolute bottom-0 d-flex justify-content-evenly">
+
+                                    <ul className="list-group list-group-horizontal-sm">
+                                        <li className="list-group-item list-group-item-info">width</li>
+                                        <li className="list-group-item">{Math.floor(details.width)} px</li>
+                                    </ul>
+        
+                                    <ul className="list-group list-group-horizontal-sm">
+                                        <li className="list-group-item list-group-item-info">height</li>
+                                        <li className="list-group-item">{Math.floor(details.height)} px</li>
+                                    </ul>
+
+                                </div>
                             </div>
+
+
                         </Col>
                     </Row>
                 </Container>
@@ -119,7 +134,8 @@ function ModalCropper({setImage}, ref){
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={hide}>Close</Button>
+                <Button variant="danger" onClick={reset}>Reset</Button>
+
                 <Button variant="primary" onClick={save}>Save</Button>
             </Modal.Footer>
         </Modal>
