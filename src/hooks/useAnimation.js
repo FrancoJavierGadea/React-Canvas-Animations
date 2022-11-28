@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getPhotoMap } from '../helpers/PhotoMap';
 
-
-export function useAnimation(canvasRef, animationFunction){
+export function useAnimation(canvasRef, animationFunction, opt = {}){
 
     const id = useRef(null);
 
@@ -10,7 +8,7 @@ export function useAnimation(canvasRef, animationFunction){
 
     const [animation, setAnimation] = useState(() => animationFunction);
 
-    const [animationOptions, setAnimationOptions] = useState({});
+    const [options, setOptions] = useState(opt);
 
     useEffect(() => {
 
@@ -20,7 +18,7 @@ export function useAnimation(canvasRef, animationFunction){
 
             try {
                 
-                const anime = animation(canvasRef.current, animationOptions);
+                const anime = animation(canvasRef.current, options);
     
                 const animate = () => {
                     
@@ -33,17 +31,7 @@ export function useAnimation(canvasRef, animationFunction){
             }
             catch (error) {
                 
-                if(error.cause === 'photoMap'){
-
-                    let {img, width, height} = animationOptions.image;
-
-                    const photoMap = getPhotoMap(img, width, height);
-
-                    setAnimationOptions({
-                        ...animationOptions,
-                        photoMap
-                    })
-                }
+                console.log(error);
             }
         }
 
@@ -54,12 +42,13 @@ export function useAnimation(canvasRef, animationFunction){
                 console.log('Stop Animation');
 
                 cancelAnimationFrame(id.current);
+
                 id.current = null;
             }
         }
         
-    }, [start, animation, animationOptions]);
+    }, [start, animation, options]);
 
 
-    return [id.current, start, setStart, animation, setAnimation, animationOptions, setAnimationOptions];
+    return { id, start, setStart, animation, setAnimation, options, setOptions };
 }

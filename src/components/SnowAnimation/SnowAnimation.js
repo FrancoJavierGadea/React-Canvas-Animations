@@ -46,22 +46,7 @@ class Particle {
 
     draw(){
 
-        //* Color
-        switch(true){
-
-            case typeof this.options.color === 'string':
-
-                this.ctx.fillStyle = this.options.color;
-                break;
-
-            case Array.isArray(this.options.color) && this.options.color.length > 0:
-
-                this.ctx.fillStyle = this.options.color[ Math.floor(Math.random() * this.options.color.length) ];
-                break;
-                
-            default:
-                this.ctx.fillStyle = '#ffffff';  
-        }
+        this.ctx.fillStyle = this.options.color;
         
         this.ctx.globalAlpha = 0.5;
         
@@ -73,18 +58,7 @@ class Particle {
 
         this.update();
     }
-
-    set setColor(color){
-
-        this.options.color = color;
-    }
-
-    get getColor(){
-
-        return this.options.color;
-    }
 }
-
 
 
 export const SnowAnimation = (canvas, opt = {}) => {
@@ -93,25 +67,27 @@ export const SnowAnimation = (canvas, opt = {}) => {
 
     let options = {
         image: undefined,
-        drawImage: true,
+        drawImage: false,
         number: 5000,
         particle: {},
         ...opt
     }
 
-    if(!options.drawImage){
+    
+    //* Clear the canvas
+    const ctx = canvas.getContext('2d');
 
-        const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
+    //* Set Particles
     let Particles = [];
 
     for(let i = 0; i < options.number; i++){
 
         Particles.push(new Particle(canvas, options.particle));
     }
+
 
     return {
         draw: () => {
@@ -140,3 +116,18 @@ export const SnowAnimation = (canvas, opt = {}) => {
     }
 }
 
+export const optionsDefaultValue = {
+
+    image: undefined,
+
+    drawImage: false,
+
+    number: 5000,
+
+    particle: {
+        
+        color: '#ffffff',
+
+        velocity: 1.5,
+    }
+}
