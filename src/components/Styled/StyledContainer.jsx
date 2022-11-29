@@ -15,6 +15,8 @@ const StyledContainer = styled.div`
 
     padding: 0;
 
+    overflow: auto;
+
     img {
         width: 100%;
         height: 100%;

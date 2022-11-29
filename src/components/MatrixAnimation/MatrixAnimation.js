@@ -51,28 +51,15 @@ class Letter {
 
     draw(){
 
-        //* Color
-        switch(true){
-
-            case typeof this.options.color === 'string':
-
-                this.ctx.fillStyle = this.options.color;
-                break;
-
-            case Array.isArray(this.options.color) && this.options.color.length > 0:
-
-                this.ctx.fillStyle = this.options.color[ Math.floor(Math.random() * this.options.color.length) ];
-                break;
-                
-            default:
-                this.ctx.fillStyle = '#00ff00';  
-        }
+        //Color
+        this.ctx.fillStyle = this.options.color;
+           
 
         //Fuente
         this.ctx.font = this.options.fontSize + 'px monospace';
 
-        //Actualzar el Caracter cada 100 ms mientras la animacion este activa
-        if(this.activateInterval){
+        //! Actualzar el Caracter cada 100 ms mientras la animacion este activa
+        if( this.activateInterval ){
 
             this.activateInterval = false;
 
@@ -120,18 +107,18 @@ export const MatrixAnimation = (canvas, opt = {}) => {
         ...opt
     }
 
-    if(!options.drawImage){
+    
+    //* Clear the canvas
+    const ctx = canvas.getContext('2d');
 
-        const ctx = canvas.getContext('2d');
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
 
 
     //Tamaño de la Fuente por defecto 
     const fontSize = options.particle.fontSize || 16;
 
-    const columns = Math.round( canvas.width/fontSize );
+    const columns = Math.round( canvas.width / fontSize );
 
     const rainDrops = new Array(columns);
 
@@ -170,6 +157,25 @@ export const MatrixAnimation = (canvas, opt = {}) => {
                 l.draw();
             });
         }
+    }
+}
+
+
+export const optionsDefaultValue = {
+
+    image: undefined,
+
+    drawImage: false,
+
+    alphabet: katakana + latin + nums,
+
+    particle: {
+
+        color: '#00ff00',
+
+        fontSize: 16,
+
+        velocity: 1.5
     }
 }
 

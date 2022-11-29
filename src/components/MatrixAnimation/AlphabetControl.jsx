@@ -1,11 +1,28 @@
-import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { katakana, latin, nums } from "../../../helpers/MatrixAnimation";
+import { useEffect, useState } from "react";
+import { Button, Form, InputGroup, Modal } from "react-bootstrap";
+import { katakana, latin, nums } from "./MatrixAnimation";
 
 
-function AlphabetControl({onChange}){
+function AlphabetControl({title, defaultValue = '', onChange}){
 
-    const [values, setValues] = useState({numbers: true, latin: true, katakana: true, alphabet: nums + latin + katakana});
+    const [alphabet, setAlphabet] = useState(defaultValue);
+
+    const [values, setValues] = useState({numbers: true, latin: true, katakana: true});
+
+    useEffect(() => {
+
+        setValues({
+
+            numbers: alphabet.includes(nums),
+
+            latin: alphabet.includes(latin),
+
+            katakana: alphabet.includes(katakana)
+        });
+
+
+    }, [alphabet]);
+
 
     //* Modal
     const [visible, setVisible] = useState(false);
@@ -18,27 +35,30 @@ function AlphabetControl({onChange}){
 
         hide();
 
-        onChange({value: values.alphabet});
-
+        onChange(alphabet);
     }
 
-    const addAlphabet = ({target: {value, checked, name}}) => {
 
-        setValues({
-            ...values,
-            [name]: checked,
-            alphabet: checked ? values.alphabet.concat(value) : values.alphabet.replace(value, '')
-        })
+    const addAlphabet = ({target: {name, value}}) => {
+
+        if(values[name]){
+
+            setAlphabet(alphabet.replace(value, ''));
+        }
+        else {
+        
+            setAlphabet(alphabet.concat(value));
+        }
     }
 
     const changeAlphabet = ({target: {value}}) => {
 
-        setValues({...values, alphabet: value})
+        setAlphabet(value);
     }
 
     return (<>
     
-        <Button variant="primary" onClick={show}>Alphabet</Button>
+        <Button variant="secondary" onClick={show} title={title}>Alphabet</Button>
 
         <Modal show={visible} onHide={hide}>
             <Modal.Header closeButton>
@@ -49,7 +69,7 @@ function AlphabetControl({onChange}){
                 <div>
                     <div className="input-group mb-3">
                         <div className="input-group-text list-group-item-success">
-                            <input className="form-check-input mt-0" type="checkbox" name="katakana" value={katakana} checked={values.katakana} onChange={addAlphabet}/>
+                            <input className="form-check-input mt-0" type="checkbox" name="katakana" value={katakana} checked={values.katakana} onChange={addAlphabet} />
                         </div>
                         <span className="input-group-text list-group-item-info" style={{width: '100px'}}>Katakana</span>
                         <span className="input-group-text text-truncate" style={{width: '320px'}}>{katakana}</span>
@@ -57,7 +77,7 @@ function AlphabetControl({onChange}){
 
                     <div className="input-group mb-3">
                         <div className="input-group-text list-group-item-success">
-                            <input className="form-check-input mt-0" type="checkbox" name="numbers" value={nums} checked={values.numbers} onChange={addAlphabet}/>
+                            <input className="form-check-input mt-0" type="checkbox" name="numbers" value={nums} checked={values.numbers} onChange={addAlphabet} />
                         </div>
                         <span className="input-group-text list-group-item-info" style={{width: '100px'}}>Numbers</span>
                         <span className="input-group-text text-truncate" style={{width: '320px'}}>{nums}</span>
@@ -65,7 +85,7 @@ function AlphabetControl({onChange}){
 
                     <div className="input-group mb-3">
                         <div className="input-group-text list-group-item-success">
-                            <input className="form-check-input mt-0" type="checkbox" name="latin" value={latin} checked={values.latin} onChange={addAlphabet}/>
+                            <input className="form-check-input mt-0" type="checkbox" name="latin" value={latin} checked={values.latin} onChange={addAlphabet} />
                         </div>
                         <span className="input-group-text list-group-item-info" style={{width: '100px'}}>Latin</span>
                         <span className="input-group-text text-truncate" style={{width: '320px'}}>{latin}</span>
@@ -73,8 +93,7 @@ function AlphabetControl({onChange}){
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Custom Alphabet</label>
-                    <textarea className="form-control" rows="7" value={values.alphabet} onChange={changeAlphabet}></textarea>
+                    <Form.Control as="textarea" rows={7} value={alphabet} onChange={changeAlphabet}/>
                 </div>
             </Modal.Body>
 
