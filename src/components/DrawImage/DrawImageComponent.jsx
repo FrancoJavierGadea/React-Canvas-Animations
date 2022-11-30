@@ -4,7 +4,7 @@ import ImageLoaderComponent from "../ImageLoader/ImageLoaderComponent";
 import DrawImageCanvas from "./DrawImageCanvas";
 
 //? Imagen de Prueba
-import blackhole from "./assets/images/blackhole.jpg";
+import blackhole from "../../assets/images/blackhole.jpg";
 
 function DrawImageComponent() {
 
@@ -33,11 +33,15 @@ function DrawImageComponent() {
 
         <Container>
 
-            <ImageLoaderComponent className="p-2 d-flex justify-content-evenly" maxWidth={500} maxHeight={500} onChange={(image) => setImage(image)} />
-
             <DrawImageCanvas image={image} style={{overflow: 'hidden'}} />
 
-        </Container>
+			<div className="mt-2 p-2 rounded" style={{backgroundColor: '#324897'}}>
+
+            	<ImageLoaderComponent className="d-flex justify-content-evenly" maxWidth={500} maxHeight={500} onChange={(image) => setImage(image)} />
+
+			</div>
+        
+		</Container>
 
     </div>);
 }

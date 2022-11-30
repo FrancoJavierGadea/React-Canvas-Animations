@@ -41,8 +41,8 @@ function DrawImageRainComponent() {
 
             chageImage({
                 img: image,
-                width: image.width / 2,
-                height: image.height / 2
+                width: image.width / 2.5,
+                height: image.height / 2.5
             });
         }
 
