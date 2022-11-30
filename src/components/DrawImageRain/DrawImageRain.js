@@ -70,31 +70,15 @@ class Particle {
         this.update();
 
         //* Color
-        switch(true){
+        if(this.options.mapColor === true){
 
-            case this.options.mapColor === true:
-
-                try {
-                    
-                    this.ctx.fillStyle = this.PhotoMap[this.mapY][this.mapX].color;
-                } 
-                catch (error){}
-
-                break
-
-            case typeof this.options.color === 'string':
-
-                this.ctx.fillStyle = this.options.color;
-                break;
-
-            case Array.isArray(this.options.color) && this.options.color.length > 0:
-
-                this.ctx.fillStyle = this.options.color[ Math.floor(Math.random() * this.options.color.length) ];
-                break;
-                
-            default:
-                this.ctx.fillStyle = '#ffffff';  
+            this.ctx.fillStyle = this.PhotoMap[this.mapY][this.mapX].color;
         }
+        else {
+
+            this.ctx.fillStyle = this.options.color;
+        }
+        
         
         this.ctx.globalAlpha = this.speed * 0.5;
         
@@ -151,9 +135,26 @@ export const DrawImageRain = (canvas, opt = {}) => {
 
                 p.draw();
             })
-        },
+        }
+    }
+}
 
-        name: 'DrawImageRain'
+
+export const optionsDefaultValue = {
+
+    image: undefined,
+
+    photoMap: undefined,
+
+    number: 5000,
+
+    particle: {
+
+        mapColor: false,
+
+        color: '#ffffff',
+        
+        velocity: 1.5
     }
 }
 

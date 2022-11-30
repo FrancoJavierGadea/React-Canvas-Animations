@@ -1,0 +1,124 @@
+import { useEffect, useRef, useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useAnimation } from "../../hooks/useAnimation";
+import ImageLoaderComponent from "../ImageLoader/ImageLoaderComponent";
+import StyledContainer from "../Styled/StyledContainer";
+import { DrawImageRain, optionsDefaultValue } from "./DrawImageRain";
+import DrawImageRainControls from "./DrawImageRainControls";
+
+//? Imagenes de prueba
+import kylo from "../../assets/images/kylo-rem.png";
+import rem from "../../assets/images/rem.png";
+import { getPhotoMap } from "./PhotoMap";
+
+function DrawImageRainComponent() {
+
+    const maxWidth = 960;
+
+    const maxHeight = 540;
+
+    const canvasRef = useRef(null);
+
+    const [width, setWidth] = useState(maxWidth);
+
+    const [height, setHeight] = useState(maxHeight);
+
+
+    const { id, start, setStart, options, setOptions } = useAnimation(canvasRef, DrawImageRain);
+
+
+    const [image, setImage] = useState(null);
+
+    const [photoMap, setPhotoMap] = useState(null);
+
+    useEffect(() => {
+        
+        const image = new Image();
+
+        image.src = rem;
+
+        image.onload = () => {
+
+            chageImage({
+                img: image,
+                width: image.width / 2,
+                height: image.height / 2
+            });
+        }
+
+    }, []);
+
+    useEffect(() => {
+    
+        if(image !== null){
+
+            //? Pintar la Imagen
+                const ctx = canvasRef.current.getContext('2d');
+
+                ctx.globalAlpha = 1;
+
+                ctx.drawImage(image.img, 0, 0, image.width, image.height);
+            
+
+            //? Cambiar las opciones de la Animaticion
+                setOptions({...options, image: image, photoMap: photoMap});
+        }
+
+    }, [image]);
+
+    const chageImage = (image) => {
+
+        //? Detener la animaticion
+            setStart(false);
+
+        //? Redimensionar el canvas al tamaño de la imagen
+            setWidth(image.width);  setHeight(image.height);
+
+        //? Establecer la imagen    
+            setImage(image);
+
+        //? Create Photo Map
+            setPhotoMap( getPhotoMap(image.img, image.width, image.height) );    
+    }
+
+
+    const changeOptions = (values) => {
+
+        setOptions({...values, image: image, photoMap: photoMap});
+    }
+
+    return (<div className="DrawImageRainComponent">
+        <Container>
+
+            <StyledContainer>
+                <canvas width={width} height={height} ref={canvasRef} style={{display: 'block', margin: 'auto'}}></canvas>
+            </StyledContainer>
+
+
+            <Row className="Controls p-0 m-0">
+
+                <Col className="p-2 m-0" xs={12} xl={6}>
+                    <div className="p-2 rounded" style={{backgroundColor: '#456978'}}>
+                        
+                        <ImageLoaderComponent className="d-flex justify-content-evenly" maxWidth={maxWidth} maxHeight={maxHeight} onChange={chageImage} />
+                    
+                    </div>
+                </Col>
+
+                <Col className="p-2 m-0" xs={12} xl={6}>
+                    <div className="p-2 rounded d-flex justify-content-evenly align-items-center" style={{backgroundColor: '#324897'}}>
+
+                        <Button variant={start ? 'danger' : 'primary'} onClick={ () => setStart(!start) }>{start ? 'Stop' : 'Start'}</Button>
+
+                        <DrawImageRainControls initialValues={optionsDefaultValue} onChange={changeOptions} />
+                    
+                    </div>
+                </Col>
+            </Row>
+
+        </Container>
+
+    </div>);
+}
+
+export default DrawImageRainComponent;
